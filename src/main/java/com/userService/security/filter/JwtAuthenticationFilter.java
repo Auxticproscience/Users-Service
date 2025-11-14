@@ -31,16 +31,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String header = request.getHeader("Authorization");
+        String requestURI = request.getRequestURI();
+        String authHeader = request.getHeader("Authorization");
 
-        if (header != null && header.startsWith("Bearer ")) {
-            String token = header.substring(7);
+        logger.info("========================================");
+        logger.info("JWT Filter - Processing: " + requestURI);
+        logger.info("Authorization header present: " + (authHeader != null));
+
+        if (authHeader != null) {
+            logger.info("Authorization header value: " + authHeader.substring(0, Math.min(30, authHeader.length())) + "...");
+        }
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+
+            logger.info("Token extracted, length: " + token.length());
 
             try {
                 DecodedJWT decodedJWT = jwtUtils.validateToken(token);
 
                 String userId = decodedJWT.getClaim("userId").asString();
                 String role = jwtUtils.extractRole(decodedJWT);
+
+                logger.info("✅ Token VALID - userId: " + userId + ", role: " + role);
 
                 if (role == null || role.isEmpty()) {
                     role = "ROLE_USER";
@@ -56,13 +69,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
-                logger.debug("JWT authenticated user: " + userId + " with role: " + role);
+                logger.info("✅ Authentication set in SecurityContext");
 
             } catch (Exception e) {
                 SecurityContextHolder.clearContext();
-                logger.warn("Token validation failed: " + e.getMessage());
+                logger.error("❌ Token validation FAILED: " + e.getMessage());
+                logger.error("Exception type: " + e.getClass().getName());
             }
+        } else {
+            logger.warn("⚠️ No valid Authorization header found");
         }
+
+        logger.info("Continuing filter chain...");
+        logger.info("========================================");
 
         filterChain.doFilter(request, response);
     }
