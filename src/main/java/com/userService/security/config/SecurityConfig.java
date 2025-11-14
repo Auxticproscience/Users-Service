@@ -24,20 +24,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Habilitar CORS con la configuración personalizada
+
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
 
-                // Deshabilitar CSRF (ya que usas JWT)
                 .csrf(csrf -> csrf.disable())
 
-                // Configuración de autorización
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
 
-                // Sin estado (stateless) para API REST
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )

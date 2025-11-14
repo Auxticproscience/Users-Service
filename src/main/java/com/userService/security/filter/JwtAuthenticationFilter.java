@@ -6,7 +6,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,10 +33,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String header = request.getHeader("Authorization");
 
-        System.out.println("========================================");
-        System.out.println("REQUEST: " + request.getMethod() + " " + request.getRequestURI());
-        System.out.println("Authorization header: " + (header != null ? "SI" : "NO"));
-
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
 
@@ -47,16 +42,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String userId = decodedJWT.getClaim("userId").asString();
                 String role = jwtUtils.extractRole(decodedJWT);
 
-                System.out.println("✅ Token válido");
-                System.out.println("User ID: " + userId);
-                System.out.println("Rol original del JWT: " + role);
-
                 if (role == null || role.isEmpty()) {
                     role = "ROLE_USER";
-                    System.out.println("⚠️ No había rol, usando: " + role);
                 } else if (!role.startsWith("ROLE_")) {
                     role = "ROLE_" + role;
-                    System.out.println("✅ Rol con prefijo: " + role);
                 }
 
                 List<GrantedAuthority> authorities =
@@ -67,18 +56,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
-                System.out.println("✅ Autenticación configurada con rol: " + role);
-                System.out.println("========================================");
-
             } catch (Exception e) {
-                System.out.println("❌ Error validando token: " + e.getMessage());
-                System.out.println("========================================");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-        } else {
-            System.out.println("⚠️ No hay token Bearer");
-            System.out.println("========================================");
         }
 
         filterChain.doFilter(request, response);
