@@ -38,7 +38,6 @@ public class UserServiceImpl implements UserService {
         return toDto(user);
     }
 
-
     @Override
     public UserResponse update(UUID id, UpdateUserRequest req) {
         UserEntity user = repo.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
