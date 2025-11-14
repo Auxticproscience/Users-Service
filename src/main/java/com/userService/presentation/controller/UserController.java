@@ -22,7 +22,11 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
 
-     @GetMapping("/me")
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/me")
      @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'EMPLOYEE')")
      public ResponseEntity<UserResponse> getCurrentUser() {
         String userId = SecurityUtils.getId();
