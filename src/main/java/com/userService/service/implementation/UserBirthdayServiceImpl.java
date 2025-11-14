@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class UserBirthdayServiceImpl implements UserBirthdayService {
 
-    private UserBirthdayRepository userBirthdayRepository;
+    private final UserBirthdayRepository userBirthdayRepository;
 
     @Override
     public List<UserBirthdayResponse> getAllUserBirthdays() {
