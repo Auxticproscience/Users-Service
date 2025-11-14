@@ -16,10 +16,6 @@ public class UserBirthdayController {
 
     private final UserBirthdayService userBirthdayService;
 
-    public UserBirthdayController(UserBirthdayService userBirthdayService) {
-        this.userBirthdayService = userBirthdayService;
-    }
-
     @GetMapping
     public ResponseEntity<List<UserBirthdayResponse>> getAllBirthdays() {
         List<UserBirthdayResponse> birthdays = userBirthdayService.getAllUserBirthdays();
