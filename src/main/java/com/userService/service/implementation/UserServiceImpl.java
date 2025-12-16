@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
                 .phone(req.phone())
                 .positionTitle(req.position())
                 .sede(req.sede())
+                .area(req.area())
                 .build();
         user = repo.save(user);
         return user.getId();
@@ -45,6 +46,7 @@ public class UserServiceImpl implements UserService {
         if (req.lastName() != null) user.setLastName(req.lastName());
         if (req.phone() != null) user.setPhone(req.phone());
         if (req.position() != null) user.setPositionTitle(req.position());
+        if (req.area() != null) user.setArea(req.area());
         repo.save(user);
         return toDto(user);
     }
@@ -65,6 +67,7 @@ public class UserServiceImpl implements UserService {
                 user.getEmail(),
                 user.getPhone(),
                 user.getPositionTitle(),
-                user.getSede());
+                user.getSede(),
+                user.getArea());
     }
 }
