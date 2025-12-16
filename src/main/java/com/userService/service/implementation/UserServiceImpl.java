@@ -1,12 +1,12 @@
 package com.userService.service.implementation;
 
+import com.userService.exception.UserNotFoundException;
 import com.userService.persistence.entity.UserEntity;
 import com.userService.persistence.repository.UserRepository;
 import com.userService.presentation.dto.CreateUserRequest;
 import com.userService.presentation.dto.UpdateUserRequest;
 import com.userService.presentation.dto.UserResponse;
 import com.userService.service.interfaces.UserService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,13 +35,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse findById(UUID id) {
-        UserEntity user = repo.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        UserEntity user = repo.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
         return toDto(user);
     }
 
     @Override
     public UserResponse update(UUID id, UpdateUserRequest req) {
-        UserEntity user = repo.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        UserEntity user = repo.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
         if (req.firstName() != null) user.setFirstName(req.firstName());
         if (req.lastName() != null) user.setLastName(req.lastName());
         if (req.phone() != null) user.setPhone(req.phone());

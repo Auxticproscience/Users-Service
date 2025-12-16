@@ -23,11 +23,11 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/me")
-     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'EMPLOYEE')")
-     public ResponseEntity<UserResponse> getCurrentUser() {
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_EMPLOYEE')")
+    public ResponseEntity<UserResponse> getCurrentUser() {
         String userId = SecurityUtils.getId();
         return ResponseEntity.ok(userService.findById(UUID.fromString(userId)));
-     }
+    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'EMPLOYEE') or #id.toString() == authentication.principal")
