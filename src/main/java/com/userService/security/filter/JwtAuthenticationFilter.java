@@ -54,12 +54,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String userId = decodedJWT.getClaim("userId").asString();
                 String role = decodedJWT.getClaim("role").asString();
 
-                if (role == null || role.isBlank()) {
-                    throw new RuntimeException("Role missing in token");
-                }
+                log.info("JWT userId: {}", userId);
+                log.info("JWT role: {}", role);
 
                 List<GrantedAuthority> authorities =
-                        Collections.singletonList(new SimpleGrantedAuthority(role));
+                        List.of(new SimpleGrantedAuthority(role));
+
+                log.info("Authorities loaded: {}", authorities);
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userId, null, authorities);
@@ -67,6 +68,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
             } catch (Exception e) {
+                log.error("JWT ERROR: {}", e.getMessage(), e);
                 SecurityContextHolder.clearContext();
             }
         }
