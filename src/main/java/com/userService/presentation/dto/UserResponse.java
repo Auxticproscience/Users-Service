@@ -9,5 +9,6 @@ public record UserResponse(
         String email,
         String phone,
         String position,
-        String sede
+        String sede,
+        String area
 ) {}

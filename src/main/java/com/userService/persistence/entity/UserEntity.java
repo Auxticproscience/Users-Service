@@ -37,6 +37,8 @@ public class UserEntity {
 
     private String sede;
 
+    private String area;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
