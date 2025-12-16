@@ -52,12 +52,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 DecodedJWT decodedJWT = jwtUtils.validateToken(token);
 
                 String userId = decodedJWT.getClaim("userId").asString();
-                String role = jwtUtils.extractRole(decodedJWT);
+                String role = decodedJWT.getClaim("role").asString();
 
-                if (role == null || role.isEmpty()) {
-                    role = "ROLE_USER";
-                } else if (!role.startsWith("ROLE_")) {
-                    role = "ROLE_" + role;
+                if (role == null || role.isBlank()) {
+                    throw new RuntimeException("Role missing in token");
                 }
 
                 List<GrantedAuthority> authorities =
