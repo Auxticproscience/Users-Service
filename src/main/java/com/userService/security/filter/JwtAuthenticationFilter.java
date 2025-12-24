@@ -54,9 +54,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String userId = decodedJWT.getClaim("userId").asString();
                 String role = decodedJWT.getClaim("role").asString();
 
-                log.info("JWT userId: {}", userId);
-                log.info("JWT role: {}", role);
-
                 List<GrantedAuthority> authorities =
                         List.of(new SimpleGrantedAuthority(role));
 

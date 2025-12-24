@@ -6,7 +6,6 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
-import org.aspectj.apache.bcel.classfile.Module;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,8 +20,8 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("Intranet User Service API")
                         .description("Servicio de gestión de usuarios para la intranet corporativa. " +
-                                "Maneja guardado, actualiziacion, eliminación y visualización de usuarios. ")
-                        .version("1.0.0")
+                                "Maneja guardado, actualizacion, eliminación y visualización de usuarios. ")
+                        .version("1.4.2")
                         .contact(new Contact()
                                 .name("Luis Eduardo Velez Posada")
                                 .email("luiseduardovelez88@gmail.com")
@@ -30,7 +29,7 @@ public class OpenApiConfig {
                 .servers(List.of(
                         new Server().url("http://localhost:8082").description("Desarrollo - SERVICE "),
                         new Server().url("http://localhost:8080").description("Desarrollo - API Gateway"),
-                        new Server().url("https://api.empresa.com").description("Producción")
+                        new Server().url("https://intranet-api-gateway.onrender.com").description("Producción")
                 ))
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new io.swagger.v3.oas.models.Components()
