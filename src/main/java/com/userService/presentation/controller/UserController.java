@@ -1,8 +1,6 @@
 package com.userService.presentation.controller;
 
-import com.userService.presentation.dto.CreateUserRequest;
-import com.userService.presentation.dto.UpdateUserRequest;
-import com.userService.presentation.dto.UserResponse;
+import com.userService.presentation.dto.*;
 import com.userService.service.interfaces.UserService;
 import com.userService.utils.SecurityUtils;
 import jakarta.validation.Valid;
@@ -50,5 +48,19 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN') or #id.toString() == authentication.principal")
     public ResponseEntity<UserResponse> updateUser(@PathVariable UUID id, @Valid @RequestBody UpdateUserRequest req) {
         return ResponseEntity.ok(userService.update(id, req));
+    }
+
+    @GetMapping("/{id}/profile")
+    @PreAuthorize("hasAuthority('ROLE_INTERNAL') or hasAnyRole('ADMIN','MANAGER','EMPLOYEE')")
+    public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable UUID id) {
+        UserResponse user = userService.findById(id);
+
+        return ResponseEntity.ok(
+                new UserProfileResponse(
+                        user.id(),
+                        user.firstName(),
+                        user.lastName()
+                )
+        );
     }
 }
