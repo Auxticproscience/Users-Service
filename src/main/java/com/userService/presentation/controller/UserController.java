@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/profile")
-    @PreAuthorize("hasAuthority('ROLE_INTERNAL') or hasAnyRole('ADMIN','MANAGER','EMPLOYEE')")
+    @PreAuthorize("hasRole('ADMIN') or #id.toString() == authentication.principal")
     public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable UUID id) {
         UserResponse user = userService.findById(id);
 
