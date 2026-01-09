@@ -21,5 +21,5 @@ Registra información de usuarios y sus cumpleaños, utilizando PostgreSQL como 
 
 1. Clonar el repositorio:
 ```bash
-git clone https://github.com/LuisVelez1/intranet-users-service.git
-cd intranet-users-service
+https://github.com/Auxticproscience/Users-Service.git
+cd users-service
