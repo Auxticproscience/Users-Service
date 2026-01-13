@@ -1,5 +1,6 @@
 package com.userService.persistence.entity;
 
+import com.userService.presentation.dto.CreateUserRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,4 +47,16 @@ public class UserEntity {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public static UserEntity from(CreateUserRequest request) {
+        return UserEntity.builder()
+                .firstName(request.firstName())
+                .lastName(request.lastName())
+                .email(request.email())
+                .phone(request.phone())
+                .positionTitle(request.positionTitle())
+                .sede(request.sede())
+                .area(request.area())
+                .build();
+    }
 }

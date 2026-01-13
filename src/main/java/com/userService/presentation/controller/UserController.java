@@ -1,6 +1,7 @@
 package com.userService.presentation.controller;
 
 import com.userService.presentation.dto.*;
+import com.userService.service.UserOrchestrationService;
 import com.userService.service.interfaces.UserService;
 import com.userService.utils.SecurityUtils;
 import jakarta.validation.Valid;
@@ -18,7 +19,16 @@ import java.util.UUID;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
+
+    private final UserOrchestrationService userOrchestrationService;
     private final UserService userService;
+
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> createUser(@Valid @RequestBody CreateUserRequest request) {
+        userOrchestrationService.createUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
     @GetMapping("/me")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_EMPLOYEE')")
@@ -35,13 +45,6 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUser(){
         return ResponseEntity.ok(userService.getAll());
-    }
-
-    @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Map<String, UUID>> createUser(@Valid @RequestBody CreateUserRequest req) {
-        UUID id = userService.create(req);
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", id));
     }
 
     @PutMapping("/{id}")

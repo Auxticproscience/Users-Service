@@ -33,6 +33,10 @@ springdoc:
     tryItOutEnabled: true
   show-actuator: true
 
+auth:
+  service:
+    url: https://api-gateway-v121.onrender.com/api/auth
+
 management:
   endpoints:
     web:
