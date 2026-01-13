@@ -35,7 +35,7 @@ springdoc:
 
 auth:
   service:
-    url: https://api-gateway-v121.onrender.com/api/auth
+    url: {AUTH_SERVICE_URL}
 
 management:
   endpoints:

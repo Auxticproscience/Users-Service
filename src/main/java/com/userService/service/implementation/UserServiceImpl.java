@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
                 .lastName(req.lastName())
                 .email(req.email())
                 .phone(req.phone())
-                .positionTitle(req.position())
+                .positionTitle(req.positionTitle())
                 .sede(req.sede())
                 .area(req.area())
                 .build();
