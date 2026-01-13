@@ -23,8 +23,8 @@ public class UserController {
     private final UserOrchestrationService userOrchestrationService;
     private final UserService userService;
 
-    @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
     public ResponseEntity<Void> createUser(@Valid @RequestBody CreateUserRequest request) {
         userOrchestrationService.createUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
