@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface UserBirthdayRepository {
+@Repository
+public interface UserBirthdayRepository extends JpaRepository<UserBirthdayEntity, UUID> {
 
     @Query("""
         SELECT new com.userService.presentation.dto.UserBirthdayResponse(
@@ -22,6 +24,4 @@ public interface UserBirthdayRepository {
         ORDER BY b.birthdayDate
     """)
     List<UserBirthdayResponse> findAllBirthdays();
-
-    void save(UserBirthdayEntity userBirthdayEntity);
 }
