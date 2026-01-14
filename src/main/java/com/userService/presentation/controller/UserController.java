@@ -37,8 +37,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getAll());
     }
 
-    @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
     public ResponseEntity<Map<String, UUID>> createUser(@Valid @RequestBody CreateUserRequest req) {
         UUID id = userService.create(req);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", id));
