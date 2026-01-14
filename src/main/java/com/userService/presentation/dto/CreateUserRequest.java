@@ -14,9 +14,7 @@ public record CreateUserRequest(
         String positionTitle,
         String sede,
         String area,
-
         @NotBlank String password,
         @NotBlank String role,
-
         @NotNull LocalDate birthday
 ) {}

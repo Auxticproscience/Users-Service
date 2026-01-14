@@ -23,7 +23,7 @@ public class UserController {
     private final UserOrchestrationService userOrchestrationService;
     private final UserService userService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<Void> createUser(@Valid @RequestBody CreateUserRequest request) {
         userOrchestrationService.createUser(request);
