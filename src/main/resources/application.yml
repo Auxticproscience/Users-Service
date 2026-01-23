@@ -4,32 +4,47 @@ server:
 spring:
   application:
     name: user-service
+
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://ep-calm-wind-aht693c7-pooler.c-3.us-east-1.aws.neon.tech/users_service_db?sslmode=require&channelBinding=require}
-    username: ${DATABASE_USERNAME:neondb_owner}
-    password: ${DATABASE_PASSWORD:npg_GFRUAMs1n0pz}
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
     properties:
-      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_SERVER_URL}
     register-with-eureka: true
     fetch-registry: true
 
   instance:
     prefer-ip-address: true
-    hostname: localhost
-    instance-id: ${spring.application.name}:${server.port}
+    instance-id: ${spring.application.name}:${random.value}
+
+services:
+  auth:
+    base-url: ${AUTH_SERVICE_URL:http://auth-service}
+
+security:
+  jwt:
+    key:
+      private: ${JWT_PRIVATE_KEY}
+    user:
+      generator: ${JWT_USER_GENERATOR}
 
 springdoc:
   api-docs:
+    path: /v3/api-docs
+  swagger-ui:
     path: /swagger-ui.html
     operations-sorter: method
     tags-sorter: alpha
@@ -44,20 +59,3 @@ management:
   endpoint:
     health:
       show-details: always
-    info:
-      env:
-        enable: true
-
-services:
-  auth:
-    base-url:  http://auth-service
-
-
-
-security:
-  jwt:
-    key:
-      private: ${JWT_PRIVATE_KEY:key123}
-    user:
-      generator: ${JWT_USER_GENERATOR:ProScience}
-
