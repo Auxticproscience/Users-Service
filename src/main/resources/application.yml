@@ -32,7 +32,7 @@ eureka:
 
 services:
   auth:
-    base-url: ${AUTH_SERVICE_URL:http://auth-service}
+    base-url: ${AUTH_SERVICE_URL:https://auth-service-oilz.onrender.com}
 
 security:
   jwt:
