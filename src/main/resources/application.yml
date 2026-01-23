@@ -1,17 +1,17 @@
 server:
-  port: ${PORT}
+  port: ${PORT:8082}
 
 spring:
   application:
     name: user-service
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: ${DATABASE_URL:jdbc:postgresql://ep-calm-wind-aht693c7-pooler.c-3.us-east-1.aws.neon.tech/users_service_db?sslmode=require&channelBinding=require}
+    username: ${DATABASE_USERNAME:neondb_owner}
+    password: ${DATABASE_PASSWORD:npg_GFRUAMs1n0pz}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -19,7 +19,10 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: ${EUREKA_SERVER_URL}
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
   instance:
     prefer-ip-address: true
     hostname: localhost
@@ -44,9 +47,17 @@ management:
     info:
       env:
         enable: true
+
+services:
+  auth:
+    base-url:  http://auth-service
+
+
+
 security:
   jwt:
     key:
-      private: ${JWT_PRIVATE_KEY}
+      private: ${JWT_PRIVATE_KEY:key123}
     user:
-      generator: ${JWT_USER_GENERATOR}
+      generator: ${JWT_USER_GENERATOR:ProScience}
+

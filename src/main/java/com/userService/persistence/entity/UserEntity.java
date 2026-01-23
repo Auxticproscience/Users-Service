@@ -1,9 +1,9 @@
 package com.userService.persistence.entity;
 
+import com.userService.persistence.enums.AccountStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -18,8 +18,8 @@ import java.util.UUID;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "uuid")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(updatable = false, nullable = false)
     private UUID id;
 
     @Column(name = "first_name", nullable = false)
@@ -33,17 +33,27 @@ public class UserEntity {
 
     private String phone;
 
+    @Column(name = "position_title")
     private String positionTitle;
 
+    @Column(name = "sede")
     private String sede;
 
+    @Column(name = "area")
     private String area;
 
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private AccountStatus status =  AccountStatus.ACTIVE;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        if(this.status == null) {
+            this.status = AccountStatus.ACTIVE;
+        }
+    }
 }

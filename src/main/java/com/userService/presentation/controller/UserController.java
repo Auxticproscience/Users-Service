@@ -20,38 +20,37 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/me")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_EMPLOYEE')")
-    public ResponseEntity<UserResponse> getCurrentUser() {
-        String userId = SecurityUtils.getId();
-        return ResponseEntity.ok(userService.findById(UUID.fromString(userId)));
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
+    public ResponseEntity<UserResponse> createUser(
+            @Valid @RequestBody CreateUserRequest req
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(userService.create(req));
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser() {
+        UUID userId = SecurityUtils.getCurrentUserId();
+        return ResponseEntity.ok(userService.findById((userId)));
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'EMPLOYEE') or #id.toString() == authentication.principal")
     public ResponseEntity<UserResponse> getUserById(@PathVariable UUID id) {
         return ResponseEntity.ok(userService.findById(id));
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUser(){
         return ResponseEntity.ok(userService.getAll());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public ResponseEntity<Map<String, UUID>> createUser(@Valid @RequestBody CreateUserRequest req) {
-        UUID id = userService.create(req);
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", id));
-    }
-
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or #id.toString() == authentication.principal")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable UUID id, @Valid @RequestBody UpdateUserRequest req) {
-        return ResponseEntity.ok(userService.update(id, req));
-    }
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}/profile")
-    @PreAuthorize("hasRole('ADMIN') or #id.toString() == authentication.principal")
     public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable UUID id) {
         UserResponse user = userService.findById(id);
 
@@ -62,5 +61,28 @@ public class UserController {
                         user.lastName()
                 )
         );
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUser(@PathVariable UUID id, @Valid @RequestBody UpdateUserRequest req) {
+        return ResponseEntity.ok(userService.update(id, req));
+    }
+
+    @PutMapping("/{id}/email")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> updateEmail(
+            @PathVariable UUID id,
+            @RequestBody Map<String, String> body
+    ) {
+        userService.updateEmail(id, body.get("email"));
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

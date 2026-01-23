@@ -5,6 +5,7 @@ public record UpdateUserRequest(
         String lastName,
         String phone,
         String position,
+        String sede,
         String area
 ) {
 }

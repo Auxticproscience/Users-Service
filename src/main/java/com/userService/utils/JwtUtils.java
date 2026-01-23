@@ -9,6 +9,9 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+import java.util.UUID;
+
 @Component
 public class JwtUtils {
 
@@ -27,14 +30,17 @@ public class JwtUtils {
                     .build();
 
             return verifier.verify(token);
-
         } catch (JWTVerificationException exception) {
-            throw new JWTVerificationException("Token inválido o no autorizado ");
+            throw new JWTVerificationException("Token invalid, not Authorized");
         }
     }
 
     public String extractId(DecodedJWT decodedJWT) {
         return decodedJWT.getSubject();
+    }
+
+    public String extractEmail(DecodedJWT decodedJWT) {
+        return decodedJWT.getClaim("email").asString();
     }
 
     public String extractRole(DecodedJWT decodedJWT) {

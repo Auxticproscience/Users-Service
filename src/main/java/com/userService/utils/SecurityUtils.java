@@ -1,30 +1,38 @@
 package com.userService.utils;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import java.util.UUID;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 public class SecurityUtils {
-    public static String getRole (){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getAuthorities().stream()
-                .map(grantedAuthority -> grantedAuthority.getAuthority())
-                .findFirst()
-                .orElse("ROLE_ANONYMOUS");
-    }
 
-    public static String getId () {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getName();
-    }
+    private static Authentication getAuth() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    public static String getCurrentRole () {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication != null){
-            for(GrantedAuthority authority : authentication.getAuthorities()){
-                return authority.getAuthority();
-            }
+        if (auth == null || auth.getPrincipal() == null) {
+            throw new IllegalStateException("No hay autenticación en el contexto");
         }
-        throw new IllegalStateException("No authenticated user found");
+
+        return auth;
+    }
+
+    public static UUID getCurrentUserId() {
+        return UUID.fromString((String) getAuth().getPrincipal());
+    }
+
+    public static String getCurrentRole() {
+        return getAuth().getAuthorities()
+                .stream()
+                .findFirst()
+                .map(a -> a.getAuthority())
+                .orElse(null);
+    }
+
+    public static String getToken() {
+        Object details = getAuth().getDetails();
+        return details != null ? details.toString() : null;
     }
 }
+
+
