@@ -37,9 +37,9 @@ services:
 security:
   jwt:
     key:
-      private: ${JWT_PRIVATE_KEY}
+      private: ${JWT_PRIVATE_KEY:key123}
     user:
-      generator: ${JWT_USER_GENERATOR}
+      generator: ${JWT_USER_GENERATOR:ProScience}
 
 springdoc:
   api-docs:
