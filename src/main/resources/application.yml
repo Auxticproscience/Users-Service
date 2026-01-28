@@ -6,9 +6,9 @@ spring:
     name: user-service
 
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: ${DATABASE_URL:jdbc:postgresql://ep-calm-wind-aht693c7-pooler.c-3.us-east-1.aws.neon.tech/users_service_db}
+    username: ${DATABASE_USERNAME:neondb_owner}
+    password: ${DATABASE_PASSWORD:npg_GFRUAMs1n0pz}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -22,7 +22,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: ${EUREKA_SERVER_URL}
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
     register-with-eureka: true
     fetch-registry: true
 
@@ -32,7 +32,7 @@ eureka:
 
 services:
   auth:
-    base-url: ${AUTH_SERVICE_URL:https://auth-service-oilz.onrender.com}
+    base-url: ${AUTH_SERVICE_URL:https://auth-service}
 
 security:
   jwt:
