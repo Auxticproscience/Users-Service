@@ -1,6 +1,7 @@
 package com.userService.presentation.dto;
 
-import java.util.Date;
+import com.userService.persistence.enums.AccountStatus;
+
 import java.util.UUID;
 
 public record UserResponse(
@@ -11,5 +12,6 @@ public record UserResponse(
         String phone,
         String position,
         String sede,
-        String area
+        String area,
+        AccountStatus status
 ) {}

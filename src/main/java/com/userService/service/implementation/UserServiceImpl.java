@@ -124,7 +124,8 @@ public class UserServiceImpl implements UserService {
                 user.getPhone(),
                 user.getPositionTitle(),
                 user.getSede(),
-                user.getArea()
+                user.getArea(),
+                user.getStatus()
         );
     }
 }
