@@ -1,7 +1,10 @@
-package com.userService.presentation.controller;
+package com.userService.presentation.controller.user;
 
-import com.userService.presentation.dto.*;
-import com.userService.service.interfaces.UserService;
+import com.userService.presentation.dto.user.request.CreateUserRequest;
+import com.userService.presentation.dto.user.request.UpdateUserRequest;
+import com.userService.presentation.dto.user.response.UserProfileResponse;
+import com.userService.presentation.dto.user.response.UserResponse;
+import com.userService.service.interfaces.user.UserService;
 import com.userService.utils.SecurityUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -67,16 +70,6 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable UUID id, @Valid @RequestBody UpdateUserRequest req) {
         return ResponseEntity.ok(userService.update(id, req));
-    }
-
-    @PutMapping("/{id}/email")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Void> updateEmail(
-            @PathVariable UUID id,
-            @RequestBody Map<String, String> body
-    ) {
-        userService.updateEmail(id, body.get("email"));
-        return ResponseEntity.ok().build();
     }
 
     @PreAuthorize("hasRole('ADMIN')")

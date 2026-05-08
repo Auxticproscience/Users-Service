@@ -1,7 +1,7 @@
-package com.userService.persistence.repository;
+package com.userService.persistence.repository.user;
 
-import com.userService.persistence.entity.UserEntity;
-import com.userService.service.interfaces.UserBirthdayView;
+import com.userService.persistence.entity.user.UserEntity;
+import com.userService.service.interfaces.user.UserBirthdayView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,16 +1,12 @@
-package com.userService.service.implementation;
+package com.userService.service.implementation.user;
 
-import com.userService.persistence.repository.UserBirthdayRepository;
-import com.userService.presentation.dto.UserBirthdayResponse;
-import com.userService.service.interfaces.UserBirthdayService;
-import lombok.AllArgsConstructor;
+import com.userService.persistence.repository.user.UserBirthdayRepository;
+import com.userService.presentation.dto.user.response.UserBirthdayResponse;
+import com.userService.service.interfaces.user.UserBirthdayService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

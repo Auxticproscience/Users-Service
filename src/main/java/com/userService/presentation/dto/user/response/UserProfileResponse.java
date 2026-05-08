@@ -1,4 +1,4 @@
-package com.userService.presentation.dto;
+package com.userService.presentation.dto.user.response;
 
 import java.util.UUID;
 

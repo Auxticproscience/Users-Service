@@ -20,7 +20,7 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("Intranet User Service API")
                         .description("Servicio de gestión de usuarios para la intranet corporativa. " +
-                                "Maneja guardado, actualizacion, eliminación y visualización de usuarios. ")
+                                "Maneja autenticación, autorización, guardado, actualización, eliminación y visualización de usuarios.")
                         .version("1.4.2")
                         .contact(new Contact()
                                 .name("Luis Eduardo Velez Posada")

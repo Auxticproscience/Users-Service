@@ -1,9 +1,8 @@
-package com.userService.persistence.entity;
+package com.userService.persistence.entity.user;
 
 import com.userService.persistence.enums.AccountStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -27,9 +26,6 @@ public class UserEntity {
 
     @Column(name = "last_name", nullable = false)
     private String lastName;
-
-    @Column(nullable = false, unique = true)
-    private String email;
 
     private String phone;
 

@@ -1,4 +1,4 @@
-package com.userService.service.interfaces;
+package com.userService.service.interfaces.user;
 
 import java.time.LocalDate;
 

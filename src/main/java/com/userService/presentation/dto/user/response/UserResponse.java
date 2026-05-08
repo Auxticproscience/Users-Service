@@ -1,4 +1,4 @@
-package com.userService.presentation.dto;
+package com.userService.presentation.dto.user.response;
 
 import com.userService.persistence.enums.AccountStatus;
 
@@ -8,7 +8,6 @@ public record UserResponse(
         UUID id,
         String firstName,
         String lastName,
-        String email,
         String phone,
         String position,
         String sede,

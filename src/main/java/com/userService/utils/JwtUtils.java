@@ -21,6 +21,22 @@ public class JwtUtils {
     @Value("${security.jwt.user.generator}")
     private String userGenerator;
 
+    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 8;
+
+    public String createToken(String credentialId, String userId, String email, String role) {
+        Algorithm algorithm = Algorithm.HMAC256(this.privateKey);
+
+        return JWT.create()
+                .withIssuer(this.userGenerator)
+                .withSubject(credentialId)
+                .withClaim("userId", userId)
+                .withClaim("email", email)
+                .withClaim("role", role)
+                .withIssuedAt(new Date())
+                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .sign(algorithm);
+    }
+
     public DecodedJWT validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(this.privateKey);

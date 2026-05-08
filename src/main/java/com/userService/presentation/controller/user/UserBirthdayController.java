@@ -1,7 +1,7 @@
-package com.userService.presentation.controller;
+package com.userService.presentation.controller.user;
 
-import com.userService.presentation.dto.UserBirthdayResponse;
-import com.userService.service.interfaces.UserBirthdayService;
+import com.userService.presentation.dto.user.response.UserBirthdayResponse;
+import com.userService.service.interfaces.user.UserBirthdayService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +17,7 @@ public class UserBirthdayController {
     private final UserBirthdayService userBirthdayService;
 
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<UserBirthdayResponse>> getAllBirthdays() {
         List<UserBirthdayResponse> birthdays = userBirthdayService.getAllUserBirthdays();
         return ResponseEntity.ok(birthdays);
